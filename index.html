@@ -3,28 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offline Storage</title>
+  <title>Lifed</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0066cc">
+  <meta name="theme-color" content="#6366f1">
   <style>
-    body { font-family: system-ui, -apple-system, sans-serif; max-width: 500px; margin: 2rem auto; padding: 0 1rem; background: #f9f9f9; color: #333; }
-    .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
-    h1 { margin-top: 0; font-size: 1.5rem; color: #111; }
-    input, textarea, button { width: 100%; padding: 0.75rem; margin-top: 0.5rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
-    button { background: #0066cc; color: white; border: none; font-weight: 600; cursor: pointer; margin-top: 1rem; }
-    .record { background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-    .delete-btn { width: auto; margin: 0; padding: 0.4rem 0.8rem; background: #ff3b30; font-size: 0.85rem; }
+    body { font-family: system-ui, -apple-system, sans-serif; max-width: 500px; margin: 2rem auto; padding: 0 1rem; background: #0f1115; color: #f3f4f6; }
+    .card { background: #1f2937; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; }
+    h1 { margin-top: 0; font-size: 1.5rem; color: #fff; }
+    input, textarea, button { width: 100%; padding: 0.75rem; margin-top: 0.5rem; border: 1px solid #374151; border-radius: 8px; box-sizing: border-box; font-size: 1rem; background: #111827; color: #fff; }
+    button { background: #6366f1; color: white; border: none; font-weight: 600; cursor: pointer; margin-top: 1rem; }
+    #installBanner { display: none; background: #4f46e5; padding: 1rem; border-radius: 8px; margin-bottom: 1rem; text-align: center; }
+    #installBtn { background: #fff; color: #4f46e5; margin-top: 0.5rem; }
+    .record { background: #1f2937; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #374151; display: flex; justify-content: space-between; align-items: center; }
+    .delete-btn { width: auto; margin: 0; padding: 0.4rem 0.8rem; background: #ef4444; font-size: 0.85rem; }
   </style>
-  <!-- Reliable CDN source for Dexie -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.4/dexie.min.js"></script>
 </head>
 <body>
+
+  <!-- Hidden banner that appears when Chrome allows installation -->
+  <div id="installBanner">
+    <strong>Install Lifed App</strong>
+    <button id="installBtn">Tap to Install on Home Screen</button>
+  </div>
+
   <div class="card">
-    <h1>Offline Storage</h1>
+    <h1>Lifed - Notes & Vibes</h1>
     <form id="dataForm">
-      <input type="text" id="title" placeholder="Title" required />
+      <input type="text" id="title" placeholder="Title / Vibe" required />
       <textarea id="content" placeholder="Details..." rows="3" required></textarea>
-      <button type="submit">Save to Phone</button>
+      <button type="submit">Save Record</button>
     </form>
   </div>
 
@@ -32,5 +40,29 @@
   <div id="recordsList"></div>
 
   <script src="app.js"></script>
+
+  <script>
+    // Native PWA Installation Listener
+    let deferredPrompt;
+    const installBanner = document.getElementById('installBanner');
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBanner.style.display = 'block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          installBanner.style.display = 'none';
+        }
+        deferredPrompt = null;
+      }
+    });
+  </script>
 </body>
 </html>
