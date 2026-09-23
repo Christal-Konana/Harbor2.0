@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Offline App</title>
+  <title>Offline Storage</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4A90E2">
+  <meta name="theme-color" content="#0066cc">
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; max-width: 500px; margin: 2rem auto; padding: 0 1rem; background: #f9f9f9; color: #333; }
     .card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
@@ -15,7 +15,8 @@
     .record { background: white; padding: 1rem; border-radius: 8px; margin-bottom: 0.75rem; border: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
     .delete-btn { width: auto; margin: 0; padding: 0.4rem 0.8rem; background: #ff3b30; font-size: 0.85rem; }
   </style>
-  <script src="https://unpkg.com/dexie/dist/dexie.js"></script>
+  <!-- Reliable CDN source for Dexie -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dexie/3.2.4/dexie.min.js"></script>
 </head>
 <body>
   <div class="card">
